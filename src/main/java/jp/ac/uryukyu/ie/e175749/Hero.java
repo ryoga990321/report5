@@ -17,10 +17,26 @@ public class Hero extends LivingThing{
     public void wounded(int damage){
         int instead=getHitPoint();
         instead -= damage;
-        if( instead < 0 ) {
+        if( instead <= 0 ) {
             setDead(true);
             System.out.printf("勇者%sは道半ばで力尽きてしまった。\n", getName());
         }
         setHitPoint(instead);
+    }
+
+    public void attack(LivingThing opponent) {
+        int damage = (int) (Math.random() * getAttack());
+        double critical=Math.random();
+        if (isDead() == false) {
+            if (damage==0) {
+                System.out.printf("%sの攻撃！,,,だが、%sは攻撃を回避した！\n", getName(), opponent.getName());
+            }else if (critical<=0.4){
+                System.out.printf("%sの攻撃！会心の一撃！！%sに%dのダメージを与えた！！\n", getName(), opponent.getName(), damage*2);
+                opponent.wounded(damage*2);
+            }else {
+                System.out.printf("%sの攻撃！%sに%dのダメージを与えた！！\n", getName(), opponent.getName(), damage);
+                opponent.wounded(damage);
+            }
+        }
     }
 }
